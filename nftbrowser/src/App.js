@@ -2,6 +2,7 @@ import { Layout, Input, Button, List, Card, message } from "antd";
 import "./App.css";
 import { useState } from "react";
 import { getContractNFTs } from "./utils";
+import NftCard from "./components/NftCard";
 
 const { Header, Content } = Layout;
 
@@ -41,7 +42,9 @@ function App() {
             style={{ width: 500 }}
             placeholder="Enter a NFT contract address to search"
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
           />
           <Button type="primary" onClick={handleSearch}>
             Search
@@ -62,12 +65,8 @@ function App() {
             xl: 4,
             xxl: 4,
           }}
-          dataSource={[1, 2, 3]}
-          renderItem={(nft) => (
-            <List.Item key={nft}>
-              <Card title={nft} />
-            </List.Item>
-          )}
+          dataSource={nfts}
+          renderItem={(nft) => <NftCard nft={nft} key={nft.token_id} />}
         />
       </Content>
     </Layout>
