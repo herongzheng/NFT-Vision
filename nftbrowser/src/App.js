@@ -1,15 +1,16 @@
-import { Layout, Input, Button, List, Card, message } from "antd";
-import "./App.css";
+import { Button, Card, Input, Layout, List, message } from "antd";
 import { useState } from "react";
 import { getContractNFTs } from "./utils";
+import "./App.css";
 import NftCard from "./components/NftCard";
+import ContractTrades from "./components/ContractTrades";
 
 const { Header, Content } = Layout;
 
 function App() {
-  const [searchText, setSearchText] = useState("");
-  const [loading, setLoading] = useState(false);
   const [nfts, setNfts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const handleSearch = async () => {
     if (searchText === "") {
@@ -27,6 +28,7 @@ function App() {
       setLoading(false);
     }
   };
+
   return (
     <Layout style={{ height: "100vh" }}>
       <Header>
@@ -37,20 +39,20 @@ function App() {
       <Content
         style={{ height: "calc(100% - 64px)", padding: 20, overflowY: "auto" }}
       >
-        <Input.Group>
+        <Input.Group compact>
           <Input
             style={{ width: 500 }}
             placeholder="Enter a NFT contract address to search"
             value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
+            onChange={(e) => setSearchText(e.target.value)}
           />
           <Button type="primary" onClick={handleSearch}>
             Search
           </Button>
+          <ContractTrades tokenAddress={searchText} />
         </Input.Group>
         <List
+          loading={loading}
           style={{
             marginTop: 20,
             height: "calc(100% - 52px)",
@@ -66,7 +68,7 @@ function App() {
             xxl: 4,
           }}
           dataSource={nfts}
-          renderItem={(nft) => <NftCard nft={nft} key={nft.token_id} />}
+          renderItem={(nft) => <NftCard nft={nft} />}
         />
       </Content>
     </Layout>
